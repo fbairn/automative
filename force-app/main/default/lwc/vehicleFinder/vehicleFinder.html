@@ -1,0 +1,88 @@
+<template>
+    <template if:false={loaded}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+
+    <template if:true={loaded}>
+        <lightning-card title="">
+            <c-wizard-step is-active={step.customer}>
+                <slot onslotchange={slotChange} onstepregistered={registerStep}></slot>
+
+                <div class="slds-var-p-around_medium lgc-bg">
+                    <lightning-input type="text" label="First Name" data-id="firstName" value={values.firstName}
+                        onchange={handleChange}></lightning-input>
+                    <lightning-input type="text" label="Last Name" data-id="lastName" value={values.lastName}
+                        onchange={handleChange}></lightning-input>
+                    <lightning-input type="tel" label="Primary Phone" data-id="phone" value={values.phone}
+                        onchange={handleChange}>
+                    </lightning-input>
+                    <lightning-input type="email" label="Email" data-id="email" value={values.email}
+                        onchange={handleChange}>
+                    </lightning-input>
+                </div>
+            </c-wizard-step>
+            <c-wizard-step is-active={step.vehicle}>
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col">
+                        <h2>Desired Vehicle</h2>
+                        <b>Year</b>
+                        <lightning-slider data-id="minYear" label="Min Year" size="x-small" min="2000" max="2021"
+                            value={values.minYear} onchange={handleChange}>
+                        </lightning-slider>
+                        <lightning-slider data-id="maxYear" label="Max Year" size="x-small" min="2000" max="2021"
+                            value={values.maxYear} onchange={handleChange}></lightning-slider>
+                        <lightning-combobox name="Make>" data-id="makeId" label="Make>" value={values.makeId}
+                            placeholder="Select Make" options={makeOptions} onchange={handleChange}>
+                        </lightning-combobox>
+                        <lightning-combobox name="Model" data-id="modelId" label="Model" value={values.modelId}
+                            placeholder="Select Model" options={modelOptions} onchange={handleChange}>
+                        </lightning-combobox>
+                        <lightning-combobox name="Body Style" data-id="bodyStyle" label="Body Style"
+                            value={values.bodyStyle} placeholder="Select Body Style" options={bodyOptions}
+                            onchange={handleChange}>
+                        </lightning-combobox>
+                        <lightning-combobox name="Color" data-id="color" label="Color" value={values.color}
+                            placeholder="Select Color" options={colorOptions} onchange={handleChange}>
+                        </lightning-combobox>
+
+                        <b>Price</b><br />
+                        Payment Calculator
+                        <lightning-combobox name="Credit Rating" data-id="credit" label="Credit Rating"
+                            value={values.credit} placeholder="Select Rating" options={creditOptions}
+                            onchange={handleChange}>
+                        </lightning-combobox>
+                        <lightning-input type="number" data-id="payment" label="Desired Payment" value={values.payment}
+                            formatter="currency" step="1.00" onchange={handleChange}>
+                        </lightning-input>
+                        <lightning-button variant="brand" label="Caclulate Vehicle Price"
+                            title="Caclulate Vehicle Price" onclick={handleCalculate} class="slds-var-m-left_x-small">
+                        </lightning-button>
+
+                        <lightning-input type="number" data-id="estPrice" label="Estimated Vehicle Price"
+                            value={values.estPrice} formatter="currency" step="1.00" onchange={handleChange}>
+                        </lightning-input>
+
+
+                        <lightning-button variant="success" label="Find Matches" title="Find Matches"
+                            onclick={handleFindMatches} class="slds-var-m-left_x-small"></lightning-button>
+                    </div>
+                    <div class="slds-col">
+                        <c-vehicle-list vehicles={vehicleMatches}></c-vehicle-list>
+                    </div>
+                </div>
+            </c-wizard-step>
+
+            <div class="slds-col slds-col_bump-left slds-text-align_right">
+                <div class="slds-button-group">
+                    <slot name="actions"></slot>
+                    <template if:false={hidePrevButton}>
+                        <lightning-button label={prevLabel} variant="brand" onclick={handlePrevStep}></lightning-button>
+                    </template>
+                    <template if:false={hideNextButton}>
+                        <lightning-button label={nextLabel} variant="brand" onclick={handleNextStep}></lightning-button>
+                    </template>
+                </div>
+            </div>
+        </lightning-card>
+    </template>
+</template>

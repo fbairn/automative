@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sold_Price</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ISBLANK(Sold_Price__c),
+ ISPICKVAL(Status,&apos;Sold&apos;))</errorConditionFormula>
+    <errorDisplayField>Sold_Price__c</errorDisplayField>
+    <errorMessage>Sale price must be filled in for sold vehicles.</errorMessage>
+</ValidationRule>
